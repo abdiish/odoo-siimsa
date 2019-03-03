@@ -1,0 +1,135 @@
+<odoo>
+  <data>
+     <!--##################LISTA PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="planning_tree_view">
+      <field name="name">planning.tree</field>
+      <field name="model">siimsa.planning</field>
+      <field name="context">{'search_default_order_id': 1}</field>
+      <field name="arch" type="xml">
+        <tree string="Work Tree">
+          <field name="num_pza"/>
+          <field name="tpo_ser"/>
+          <field name="tie_pla"/>
+          <field name="tie_rea"/>
+          <field name="id_empleado"/>
+          <field name="id_maquinaria"/>
+          <field name="state"/>
+          <field name="dato" widget="progressbar"/>
+        </tree>
+      </field>
+    </record>
+    <!--##################FORMULARIO PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="planning_form_view">
+      <field name="name">planning.form</field>
+      <field name="model">siimsa.planning</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="action_draft"
+                    type="object"
+                    string="Resegresar a borrador"
+                    states="confirmed,done"/>
+
+            <button name="action_confirmed"
+                    type="object"
+                    string="Confirmar"
+                    states="draft"
+                    class="oe_highlight"/>
+
+            <button name="action_done"
+                    type="object"
+                    string="Hecho"
+                    states="confirmed"
+                    class="oe_highlight"/>
+
+            <field name="state" widget="statusbar"/>
+          </header>
+          <sheet>
+            <group string="Actividad">
+              <group>
+                  <field name="produccion"/>
+                  <field name="num_pza"/>
+                  <field name="tpo_ser" placeholder="Selecciona una opción" required="1"/>
+              </group>
+              <group>
+                  <field name="tie_pla"/>
+                  <field name="tie_rea"/>
+                <field name="dato" widget="progressbar"/>
+              </group>
+              <group>
+                <field name="id_empleado"/>
+                <field name="id_maquinaria"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <!--##################knban PARA MATERIAL#################-->
+    <record model="ir.ui.view" id="planning_kanban_view">
+      <field name="name">planning.kanban</field>
+      <field name="model">siimsa.planning</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="state">
+          <field name="color"/>
+          <!--field name="priority"/-->
+          <templates>
+            <t t-name="kanban-box">
+              <div
+                      t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                 oe_kanban_global_click_edit oe_semantic_html_override
+                                 oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+
+                <div class="oe_dropdown_kanban">
+                  <div class="oe_dropdown_toggle">
+                    <i class="fa fa-bars fa-lg"/>
+                    <ul class="oe_dropdown_menu">
+                      <li>
+                        <a type="delete">Borrar</a>
+                      </li>
+                      <li>
+                        <ul class="oe_kanban_colorpicker"
+                            data-field="color"/>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="oe_clear"/>
+                </div>
+                <div t-attf-class="oe_kanban_content">
+                  <strong>
+                    <h4>
+                       Número de piezas:
+                       <field name="num_pza"/>
+                    </h4>
+                  </strong>
+                      Tiempo programado:
+                      <field name="tie_pla"/>
+                      <br/>
+                      Tiempo real:
+                      <field name="tie_rea" />
+                      <br/>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+    <!--##################VENTANA PARA MATERIAL#################-->
+    <record model="ir.actions.act_window" id="planning_list_action">
+      <field name="name">Actividades</field>
+      <field name="res_model">siimsa.planning</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Create the first order</p>
+      </field>
+    </record>
+
+      <!--##################ACCIONES PARA ORDEN DE TRABAJO#################-->
+    <menuitem name="Lista de actividades"
+              id="siimsa.menu_lista_planning"
+              parent="siimsa.menu"
+              action="planning_list_action"/>
+
+  </data>
+</odoo>

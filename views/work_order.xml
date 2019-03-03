@@ -1,0 +1,138 @@
+<odoo>
+  <data>
+     <!--##################LISTA PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="work_tree_view">
+      <field name="name">work.tree</field>
+      <field name="model">siimsa.work</field>
+      <field name="arch" type="xml">
+        <tree string="Work Tree">
+          <field name="name"/>
+          <field name="num_pza"/>
+          <field name="num_pte"/>
+          <field name="fec_sol"/>
+          <field name="fec_ent"/>
+          <field name="con_cte"/>
+        </tree>
+      </field>
+    </record>
+    <!--##################FORMULARIO PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="work_form_view">
+      <field name="name">work.form</field>
+      <field name="model">siimsa.work</field>
+      <field name="arch" type="xml">
+        <form string="Work Form">
+          <sheet>
+            <group>
+              <group string="Datos generales">
+                <!--field name="kanban_state" widget="kanban_state_selection"/-->
+                <field name="name"/>
+                <field name="ord_com"/>
+                <field name="num_cot"/>
+                <field name="num_fac"/>
+                <field name="num_rem"/>
+              </group>
+              <group string="Datos de entrega">
+                <field name="num_pza"/>
+                <field name="num_pte"/>
+                <field name="fec_sol"/>
+                <field name="fec_ent"/>
+                <field name="fec_rea"/>
+              </group>
+            </group>
+            <notebook>
+              <page string="Descripción">
+                <group>
+                  <field name="des_act"/>
+                </group>
+              </page>
+              <page string="Cliente">
+                <group>
+                  <field name="con_cte" style="width:40%%"/>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+      <!--##################KANBAN PARA MATERIAL#################-->
+    <record model="ir.ui.view" id="material_kanban_view">
+      <field name="name">work.kanban</field>
+      <field name="model">siimsa.work</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="color"/>
+          <field name="priority"/>
+          <!--field name="kanban_state_selection"/-->
+            <templates>
+              <t t-name="kanban-box">
+                <div class="oe_kanban_global_click">
+                  <div class="o_kanban_image">
+                    <img t-att-src="kanban_image('res.partner','image_medium', record.id.value)" class="oe_kanban_image"/>
+                  </div>
+                  <div class="oe_kanban_details">
+                    <strong>
+                      Orden de trabajo:
+                      <field name="name"/>
+                    </strong>
+                    <ul>
+                      <li t-if="record.fec_sol.raw_value">
+                        Fecha de solicitud:
+                        <field name="fec_sol"/>
+                      </li>
+                      <li t-if="record.fec_ent.raw_value">
+                        Fecha de entrega:
+                        <field name="fec_ent"/>
+                      </li>
+                      <li t-if="record.con_cte.raw_value">
+                        Cliente:
+                        <field name="con_cte"/>
+                      </li>
+                    </ul>
+                    <!--field name="kanban_state" widget="kanban_state_selection"/-->
+                    <div class="oe_kanban_footer_left">
+                      <field name="priority" widget="priority"/>
+                    </div>
+                  </div>
+                </div>
+              </t>
+            </templates>
+        </kanban>
+      </field>
+    </record>
+    <!--##################CALENDARIO PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="work_calendar_view">
+      <field name="name">work.calendar</field>
+      <field name="model">siimsa.work</field>
+      <field name="arch" type="xml">
+        <calendar string="Calendar"
+                  date_start="fec_sol"
+                  date_stop="fec_ent"
+                  color="con_cte">
+          <field name="con_cte"></field>
+        </calendar>
+      </field>
+    </record>
+    <!--##################VENTANA PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.actions.act_window" id="work_list_action">
+      <field name="name">Orden de trabajo</field>
+      <field name="res_model">siimsa.work</field>
+      <field name="view_mode">kanban,calendar,tree,form</field>
+      <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Create the first order</p>
+      </field>
+    </record>
+
+     <!--##################CATEGORIA MENU#################-->
+    <menuitem name="Planificación"
+              id="siimsa.menu_planificacion"
+              parent="siimsa.menu_root"/>
+
+      <!--##################ACCIONES PARA ORDEN DE TRABAJO#################-->
+    <menuitem name="Ordenes de trabajo"
+              id="siimsa.menu_lista_ot"
+              parent="siimsa.menu_planificacion"
+              action="work_list_action" sequence="1"/>
+
+  </data>
+</odoo>

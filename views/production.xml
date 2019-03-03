@@ -1,0 +1,107 @@
+<odoo>
+  <data>
+     <!--##################LISTA PARA ORDEN DE PRODUCCION#################-->
+    <record model="ir.ui.view" id="production_tree_view">
+      <field name="name">production.tree</field>
+      <field name="model">siimsa.production</field>
+      <field name="arch" type="xml">
+        <tree string="Work Tree">
+          <field name="name"/>
+          <field name="ord_pro"/>
+          <field name="ldm_mat"/>
+          <field name="actividades"/>
+        </tree>
+      </field>
+    </record>
+    <!--##################FORMULARIO PARA ORDEN DE PRODUCCION#################-->
+    <record model="ir.ui.view" id="production_form_view">
+      <field name="name">work.form</field>
+      <field name="model">siimsa.production</field>
+      <field name="arch" type="xml">
+        <form string="Work Form">
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1><field name="name" required="1" style="width:82%%" placeholder="Número"/> </h1>
+            </div>
+            <group name="group_top" colspan="2" col="2">
+              <group>
+                <field name="ord_pro"/>
+                <field name="ldm_mat"/>
+              </group>
+            </group>
+            <field name="actividades"/>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <!--##################KANBAN PARA ORDEN DE PRODUCCION#################-->
+    <record model="ir.ui.view" id="production_kanban_view">
+      <field name="name">production.kanban</field>
+      <field name="model">siimsa.production</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="color"/>
+          <!--field name="priority"/-->
+          <templates>
+            <t t-name="kanban-box">
+              <div
+                      t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                 oe_kanban_global_click_edit oe_semantic_html_override
+                                 oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                <div class="oe_dropdown_kanban">
+                  <div class="oe_dropdown_toggle">
+                    <i class="fa fa-bars fa-lg"/>
+                    <ul class="oe_dropdown_menu">
+                      <li>
+                        <a type="delete">Borrar</a>
+                      </li>
+                      <li>
+                        <ul class="oe_kanban_colorpicker"
+                            data-field="color"/>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="oe_clear"/>
+                </div>
+                <div t-attf-class="oe_kanban_content">
+                  <strong>
+                    <h4>
+                       Orden de trabajo:
+                       <field name="ord_pro"/>
+                    </h4>
+                  </strong>
+                     Actividades:
+                     <field name="actividades"/>
+                     <br/>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+     <!--##################VENTANA PARA ORDEN DE PRODUCCION#################-->
+    <record model="ir.actions.act_window" id="production_list_action">
+      <field name="name">Orden de producción</field>
+      <field name="res_model">siimsa.production</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Create the first order</p>
+      </field>
+    </record>
+     <!--##################TOP MENU#################-->
+    <menuitem name="Producción" id="siimsa.menu_root"/>
+
+    <menuitem name="Fabricación"
+              id="siimsa.menu"
+              parent="siimsa.menu_root"/>
+
+      <!--##################ACCIONES PARA ORDEN DE PRODUCCION#################-->
+    <menuitem name="Ordenes de producción"
+              id="siimsa.menu_lista_production"
+              parent="siimsa.menu"
+              action="production_list_action"/>
+
+  </data>
+</odoo>

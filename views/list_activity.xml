@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <template id="siimsa.list_activity" name="Lista de actividades">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.name, 150, 150)"
+                                 style="width:150px;height:150px; margin-bottom:5px; margin-right: 30px; margin-top: 10px;" align="right"/>
+                            <h3>
+                                Orden de producción n°: <span t-field="o.name"  class="label label-success"/>
+                            </h3>
+                            <t t-call="siimsa.work_order"/>
+                            <t t-call="siimsa.planning"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <!--##################################################-->
+        <template id="siimsa.work_order" name="Orden de trabajo">
+            <a>N° de Orden de trabajo
+                <span class="badge">
+                    <t t-foreach="o.ord_pro" t-as="work_order">
+                        <tr>
+                            <td><t t-esc="work_order.name"></t></td>
+                        </tr>
+                    </t>
+                </span>
+            </a>
+            <a>N° de Requisición
+                <span class="badge">
+                    <t t-foreach="o.ldm_mat" t-as="material_list">
+                        <tr>
+                            <td><t t-esc="material_list.name"></t></td>
+                        </tr>
+                    </t>
+                </span>
+            </a>
+        </template>
+        <!--##################################################-->
+        <template id="siimsa.planning" name="Actividades">
+            <h3><span>Actividades</span></h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N° de piezas</th>
+                        <th>Servicio</th>
+                        <th>Tiempo estimado</th>
+                        <th>Tiempo real</th>
+                        <th>Equipo</th>
+                        <th>Operador</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.actividades" t-as="planning">
+                        <tr class"success">
+                            <td><t t-esc="planning.num_pza"></t></td>
+                            <td><t t-esc="planning.tpo_ser"></t></td>
+                            <td><t t-esc="planning.tie_pla"></t></td>
+                            <td><t t-esc="planning.tie_rea"></t></td>
+                            <td><t t-esc="planning.id_maquinaria.name"></t></td>
+                            <td><t t-esc="planning.id_empleado.name"></t></td>
+                            <td><t t-esc="planning.state"></t></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </template>
+    </data>
+</openerp>

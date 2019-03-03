@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+     <!--##################LISTA PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="material_tree_view">
+      <field name="name">material.tree</field>
+      <field name="model">siimsa.material</field>
+      <field name="arch" type="xml">
+        <tree string="Work Tree">
+          <field name="name"/>
+          <field name="tpo_com"/>
+          <field name="solicitud"/>
+          <field name="orden"/>
+        </tree>
+      </field>
+    </record>
+    <!--##################FORMULARIO PARA ORDEN DE TRABAJO#################-->
+    <record model="ir.ui.view" id="material_form_view">
+      <field name="name">material.form</field>
+      <field name="model">siimsa.material</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1><field name="name" required="1" style="width:53%%" placeholder="Número"/> </h1>
+            </div>
+            <separator string="Datos de la requisición"/>
+            <group name="group_top">
+              <group>
+                <field name="solicitud"/>
+                <field name="orden"/>
+              </group>
+              <group>
+                <field name="fec_sol" required="1"/>
+                <field name="tpo_com" placeholder="Selecciona una opción" required="1"/>
+              </group>
+              <notebook colspan="4">
+                  <page string="Lista de materiales">
+                     <field name="material"/>
+                  </page>
+                  <page string="Lista de herramientas">
+                    <field name="herramienta"/>
+                  </page>
+              </notebook>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+     <!--##################VENTANA PARA MATERIAL#################-->
+    <record model="ir.actions.act_window" id="material_list_action">
+      <field name="name">Requisición</field>
+      <field name="res_model">siimsa.material</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Create the first order</p>
+      </field>
+    </record>
+
+      <!--##################ACCIONES PARA ORDEN DE TRABAJO#################-->
+    <menuitem name="Requisiciones(LdM)"
+              id="siimsa.menu_lista_material"
+              parent="siimsa.menu_planificacion"
+              action="material_list_action"/>
+
+  </data>
+</odoo>

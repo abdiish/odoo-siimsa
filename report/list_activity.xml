@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <report id="report_list_activities"
+                string="Lista de actividades"
+                model="siimsa.production"
+                report_type="qweb-pdf"
+                file="siimsa.list_activity"
+                name="siimsa.list_activity"
+                menu="True"/>
+
+    </data>
+</openerp>

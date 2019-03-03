@@ -1,0 +1,99 @@
+<odoo>
+  <data>
+     <!--##################LISTA PARA LDM#################-->
+    <record model="ir.ui.view" id="request_tree_view">
+      <field name="name">request.tree</field>
+      <field name="model">siimsa.request</field>
+      <field name="arch" type="xml">
+        <tree string="Work Tree">
+          <field name="name"/>
+          <field name="can_mat"/>
+          <field name="uni_mat"/>
+        </tree>
+      </field>
+    </record>
+
+    <!--##################LISTA PARA LDH#################-->
+    <record model="ir.ui.view" id="tool_tree_view">
+      <field name="name">tool.tree</field>
+      <field name="model">siimsa.tool</field>
+      <field name="arch" type="xml">
+        <tree string="Work Tree">
+          <field name="name"/>
+          <field name="can_mat"/>
+          <field name="uni_mat"/>
+        </tree>
+      </field>
+    </record>
+
+    <!--##################FORMULARIO PARA LDM#################-->
+    <record model="ir.ui.view" id="request_form_view">
+      <field name="name">request.form</field>
+      <field name="model">siimsa.request</field>
+      <field name="arch" type="xml">
+        <form string="Work Form">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="can_mat"/>
+              <field name="uni_mat"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+     <!--##################FORMULARIO PARA LDH#################-->
+    <record model="ir.ui.view" id="tool_form_view">
+      <field name="name">tool.form</field>
+      <field name="model">siimsa.tool</field>
+      <field name="arch" type="xml">
+        <form string="Work Form">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="can_mat"/>
+              <field name="uni_mat"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+     <!--##################VENTANA PARA LDM#################-->
+    <record model="ir.actions.act_window" id="request_list_action">
+      <field name="name">Orden de trabajo</field>
+      <field name="res_model">siimsa.request</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Create the first order</p>
+      </field>
+    </record>
+
+      <!--##################VENTANA PARA LDRH#################-->
+    <record model="ir.actions.act_window" id="tool_list_action">
+      <field name="name">Orden de trabajo</field>
+      <field name="res_model">siimsa.tool</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+          <p class="oe_view_nocontent_create">Create the first order</p>
+      </field>
+    </record>
+
+     <!--##################CATEGORIA MENU#################-->
+    <menuitem name="Configuración"
+              id="siimsa.menu_ldr"
+              parent="siimsa.menu_root"/>
+
+      <!--##################ACCION LISTA DE MATERIAL#################-->
+    <menuitem name="Lista de materiales"
+              id="siimsa.menu_lista"
+              parent="siimsa.menu_ldr"
+              action="request_list_action"/>
+
+       <!--##################ACCION LISTA DE HERRAMIENTAS#################-->
+    <menuitem name="Lista de herramientas"
+              id="siimsa.menu_lista_tool"
+              parent="siimsa.menu_ldr"
+              action="tool_list_action"/>
+
+  </data>
+</odoo>
